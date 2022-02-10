@@ -1,0 +1,37 @@
+{
+  "name": "greenscreenstream-examples",
+  "version": "1.0.0",
+  "description": "A collection of examples using greenscreenstream",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && webpack --config webpack.config.js"
+  },
+  "keywords": [
+    "greenscreenstream",
+    "mediastream",
+    "mediastream-api",
+    "webrtc",
+    "greenscreen",
+    "webgl2",
+    "webgl",
+    "canvas",
+    "shaders",
+    "glsl",
+    "usermedia",
+    "tensorflow",
+    "machine-learning",
+    "virtual-backgrounds",
+    "chroma-key",
+    "hologram"
+  ],
+  "author": "Magnus Thor, Johannes Franzen",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.5.5",
+    "webpack": "^5.64.2",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "greenscreenstream": "^3.0.0-beta.4"
+  }
+}
