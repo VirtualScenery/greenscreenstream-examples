@@ -1,29 +1,27 @@
-import { GreenScreenStream, GreenScreenMethod } from "GreenScreenStream";
+import { GreenScreenStream, GreenScreenMethod, VideoResolution } from "GreenScreenStream";
 import { FRACTAL } from "./fractal";
 
-document.addEventListener("DOMContentLoaded", () => {
-  navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 360 }, audio: false }).then(async (mediaStream: MediaStream) => {
-    const track = mediaStream.getVideoTracks()[0];
-    const cap = { w: track.getCapabilities().width as number, h: track.getConstraints().height as number };
-    
-    
+document.addEventListener("DOMContentLoaded", async () => {
 
-    let greenscreen = new GreenScreenStream(GreenScreenMethod.VirtualBackground, null, 640, 360);
+  const mediaStream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 360 }, audio: false })
+  const track = mediaStream.getVideoTracks()[0];
+  const cap = { w: track.getCapabilities().width as number, h: track.getConstraints().height as number };
+  
+  
+  
+  let greenscreen = new GreenScreenStream(GreenScreenMethod.VirtualBackground, VideoResolution.SD);
+  window["__instance"] = greenscreen;
+  
+  // override the default shader
+  greenscreen.bufferFrag = FRACTAL;
 
-    window["__instance"] = greenscreen;
+  
+  await greenscreen.addVideoTrack(track);
+  await greenscreen.initialize(`../assets/iChannel0.png`);
 
-    await greenscreen.addVideoTrack(track);
-    // override the default shader
-    greenscreen.bufferFrag = FRACTAL;
-    greenscreen.initialize(`../assets/iChannel0.png`).then(state => {
-      greenscreen.start(60);
-      const ms = greenscreen.captureStream(60);
-      document.querySelector("video").srcObject = ms;
+  greenscreen.start(60);
 
-    }).catch(e => {
-      greenscreen.stop();
-      console.error(e)
-    }
-    );
-  }, (e) => console.error(e));
+  const ms = greenscreen.captureStream(60);
+  document.querySelector("video").srcObject = ms;
+  
 });

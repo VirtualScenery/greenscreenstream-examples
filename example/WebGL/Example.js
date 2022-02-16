@@ -9,41 +9,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const GreenScreenStream_1 = require("GreenScreenStream");
-document.addEventListener("DOMContentLoaded", () => {
+const greenscreenstream_1 = require("greenscreenstream");
+document.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void 0, function* () {
     let customChromaKey = {
         r: 0,
         g: 0,
         b: 0
     };
-    navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 360 }, audio: false }).then((mediaStream) => __awaiter(void 0, void 0, void 0, function* () {
-        const track = mediaStream.getVideoTracks()[0];
-        let instance = new GreenScreenStream_1.GreenScreenStream(GreenScreenStream_1.GreenScreenMethod.VirtualBackgroundUsingGreenScreen, null, 640, 360);
-        yield instance.addVideoTrack(track);
-        instance.initialize("../assets/beach.jpg").then(result => {
-            const detectedColor = document.querySelector(".dominates");
-            detectedColor.addEventListener("click", () => {
-                instance.setChromaKey(customChromaKey.r, customChromaKey.g, customChromaKey.b);
-            });
-            // detect color 2 / second
-            const interrval = setInterval(() => {
-                let colors = instance.getColorsFromStream();
-                let d = colors.dominant;
-                //let p = colors.palette; // not displayed
-                const s = `rgb(${d[0]},${d[1]},${d[2]}`;
-                detectedColor.style.background = s;
-                customChromaKey.r = d[0] / 255;
-                customChromaKey.g = d[1] / 255;
-                customChromaKey.b = d[2] / 255;
-            }, 1000 * 2);
-            instance.start(25);
-            document.querySelector("video").srcObject = instance.captureStream(25);
-            detectedColor.addEventListener("click", () => {
-                instance.setChromaKey(customChromaKey.r, customChromaKey.g, customChromaKey.b);
-            });
-        }).catch(e => {
-            instance.stop();
-            console.error(e);
-        });
-    }), (e) => console.error(e));
-});
+    const inMediaStream = yield navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 360 }, audio: false });
+    const track = inMediaStream.getVideoTracks()[0];
+    let instance = new greenscreenstream_1.GreenScreenStream(greenscreenstream_1.GreenScreenMethod.VirtualBackgroundUsingGreenScreen, greenscreenstream_1.VideoResolution.SD);
+    yield instance.addVideoTrack(track);
+    yield instance.initialize("../assets/beach.jpg");
+    const detectedColor = document.querySelector(".dominates");
+    detectedColor.addEventListener("click", () => {
+        instance.setChromaKey(customChromaKey.r, customChromaKey.g, customChromaKey.b);
+    });
+    // detect color 2 / second
+    setInterval(() => {
+        let colors = instance.getColorsFromStream();
+        let d = colors.dominant;
+        //let p = colors.palette; // not displayed
+        const s = `rgb(${d[0]},${d[1]},${d[2]}`;
+        detectedColor.style.background = s;
+        customChromaKey.r = d[0] / 255;
+        customChromaKey.g = d[1] / 255;
+        customChromaKey.b = d[2] / 255;
+    }, 1000 * 2);
+    instance.start(25);
+    document.querySelector("video").srcObject = instance.captureStream(25);
+    detectedColor.addEventListener("click", () => instance.setChromaKey(customChromaKey.r, customChromaKey.g, customChromaKey.b));
+}));

@@ -11,42 +11,57 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const GreenScreenStream_1 = require("GreenScreenStream");
 let greenscreen;
-document.addEventListener("DOMContentLoaded", () => startStream(GreenScreenStream_1.GreenScreenStreamBodyPixMode.Standard));
+document.addEventListener("DOMContentLoaded", () => {
+    registerInputEvents();
+    startStream(GreenScreenStream_1.BodyPixMode.Standard);
+});
 function startStream(quality) {
     return __awaiter(this, void 0, void 0, function* () {
-        const bgfile = location.hash.length > 0 ? location.hash.replace("#", "") : "beach.jpg";
-        const inStream = yield navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 360 }, audio: false });
-        const track = inStream.getVideoTracks()[0];
-        greenscreen = new GreenScreenStream_1.GreenScreenStream(GreenScreenStream_1.GreenScreenMethod.VirtualBackground, null, 640, 360);
-        yield greenscreen.addVideoTrack(track);
+        const track = yield getWebcamInStream();
+        const bgfile = getBackground();
+        greenscreen = new GreenScreenStream_1.GreenScreenStream(GreenScreenStream_1.GreenScreenMethod.VirtualBackground, GreenScreenStream_1.VideoResolution.SD);
         yield greenscreen.initialize(`../assets/${bgfile}`, { bodyPixMode: quality });
-        greenscreen.start(60);
-        const outStream = greenscreen.captureStream(60); // capture result as a MediaSteam and attacj to video element
+        yield greenscreen.addVideoTrack(track);
+        greenscreen.start(30);
+        const outStream = greenscreen.captureStream(30); // capture result as a MediaSteam and attacj to video element
         document.querySelector("video").srcObject = outStream;
         document.querySelector(".swap").classList.remove("hide");
         window["_instance"] = greenscreen; // expose for debuging purposes
     });
 }
-document.querySelectorAll(".swap-image").forEach(s => {
-    s.addEventListener("click", (e) => {
-        const src = e.target.dataset.src;
-        greenscreen.setBackground(src);
+function getBackground() {
+    return location.hash.length > 0 ? location.hash.replace("#", "") : "beach.jpg";
+}
+function getWebcamInStream() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const camStream = yield navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 360 }, audio: false });
+        return camStream.getVideoTracks()[0];
     });
-});
-document.querySelectorAll(".swap-quality").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-        const mode = parseInt(e.target.dataset.mode);
-        /**
-         * 0 = Fast
-         * 1 = Standard
-         * 2 = Precise
-         * 3 = Maximum
-         */
-        if (mode !== 3)
-            return greenscreen.setBodyPixModel({ bodyPixMode: mode });
-        const bConfirmed = window.confirm(`This setting might seriously stress your System. \n
-            Loading might take a while.\n Continue?`);
-        if (bConfirmed)
-            greenscreen.setBodyPixModel({ bodyPixMode: mode });
+}
+function registerInputEvents() {
+    //Background change
+    document.querySelectorAll(".swap-image").forEach(s => {
+        s.addEventListener("click", (e) => {
+            const src = e.target.dataset.src;
+            greenscreen.setBackground(src);
+        });
     });
-});
+    //Quality change
+    document.querySelectorAll(".swap-quality").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const mode = parseInt(e.target.dataset.mode);
+            /**
+             * 0 = Fast
+             * 1 = Standard
+             * 2 = Precise
+             * 3 = Maximum
+             */
+            if (mode !== 3)
+                return greenscreen.setBodyPixModel({ bodyPixMode: mode });
+            const bConfirmed = window.confirm(`This setting might seriously stress your System. \n
+                Loading might take a while.\n Continue?`);
+            if (bConfirmed)
+                greenscreen.setBodyPixModel({ bodyPixMode: mode });
+        });
+    });
+}
