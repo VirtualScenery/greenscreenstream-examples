@@ -1,5 +1,9 @@
-import { GreenScreenMethod, GreenScreenStream, BodyPixMode, VideoResolution } from "GreenScreenStream";
-
+import {
+  BodyPixMode,
+  GreenScreenMethod,
+  GreenScreenStream,
+  VideoResolution,
+} from '@virtualscenery/greenscreenstream';
 
 let greenscreen: GreenScreenStream;
 

@@ -1,5 +1,10 @@
-import { GreenScreenStream, GreenScreenMethod, VideoResolution } from "GreenScreenStream";
-import { FRACTAL } from "./fractal";
+import {
+  GreenScreenMethod,
+  GreenScreenStream,
+  VideoResolution,
+} from '@virtualscenery/greenscreenstream';
+
+import { FRACTAL } from './fractal';
 
 document.addEventListener("DOMContentLoaded", async () => {
 

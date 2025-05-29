@@ -1,6 +1,8 @@
-import { GreenScreenStream, GreenScreenMethod, VideoResolution } from 'greenscreenstream';
-
-
+import {
+  GreenScreenMethod,
+  GreenScreenStream,
+  VideoResolution,
+} from '@virtualscenery/greenscreenstream';
 
 document.addEventListener("DOMContentLoaded", async () => {
 

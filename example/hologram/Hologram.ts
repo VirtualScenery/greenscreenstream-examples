@@ -1,5 +1,10 @@
-import { GreenScreenMethod, GreenScreenStream, VideoResolution } from "greenscreenstream";
-import { HOLOGRAM_SHADER } from "./hologram-shader";
+import {
+  GreenScreenMethod,
+  GreenScreenStream,
+  VideoResolution,
+} from '@virtualscenery/greenscreenstream';
+
+import { HOLOGRAM_SHADER } from './hologram-shader';
 
 document.addEventListener("DOMContentLoaded", async () => {
 

@@ -9,17 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const GreenScreenStream_1 = require("GreenScreenStream");
+const greenscreenstream_1 = require("@virtualscenery/greenscreenstream");
 let greenscreen;
 document.addEventListener("DOMContentLoaded", () => {
     registerInputEvents();
-    startStream(GreenScreenStream_1.BodyPixMode.Standard);
+    startStream(greenscreenstream_1.BodyPixMode.Standard);
 });
 function startStream(quality) {
     return __awaiter(this, void 0, void 0, function* () {
         const track = yield getWebcamInStream();
         const bgfile = getBackground();
-        greenscreen = new GreenScreenStream_1.GreenScreenStream(GreenScreenStream_1.GreenScreenMethod.VirtualBackground, GreenScreenStream_1.VideoResolution.SD);
+        greenscreen = new greenscreenstream_1.GreenScreenStream(greenscreenstream_1.GreenScreenMethod.VirtualBackground, greenscreenstream_1.VideoResolution.SD);
         yield greenscreen.initialize(`../assets/${bgfile}`, { bodyPixMode: quality });
         yield greenscreen.addVideoTrack(track);
         greenscreen.start(30);

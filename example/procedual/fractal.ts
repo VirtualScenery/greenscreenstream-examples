@@ -1,4 +1,4 @@
-export const FRACTAL = `
+export const FRACTAL = /*glsl*/`
     uniform float time;
     uniform vec2 mouse;
     uniform vec2 resolution;
