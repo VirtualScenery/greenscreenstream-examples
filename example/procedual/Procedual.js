@@ -9,13 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const GreenScreenStream_1 = require("GreenScreenStream");
+const greenscreenstream_1 = require("@virtualscenery/greenscreenstream");
 const fractal_1 = require("./fractal");
 document.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void 0, function* () {
     const mediaStream = yield navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 360 }, audio: false });
     const track = mediaStream.getVideoTracks()[0];
     const cap = { w: track.getCapabilities().width, h: track.getConstraints().height };
-    let greenscreen = new GreenScreenStream_1.GreenScreenStream(GreenScreenStream_1.GreenScreenMethod.VirtualBackground, GreenScreenStream_1.VideoResolution.SD);
+    let greenscreen = new greenscreenstream_1.GreenScreenStream(greenscreenstream_1.GreenScreenMethod.VirtualBackground, greenscreenstream_1.VideoResolution.SD);
     window["__instance"] = greenscreen;
     // override the default shader
     greenscreen.bufferFrag = fractal_1.FRACTAL;

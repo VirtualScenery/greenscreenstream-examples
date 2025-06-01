@@ -1,4 +1,4 @@
-import { GreenScreenStream, GreenScreenMethod, VideoResolution } from 'greenscreenstream';
+import { GreenScreenStream, GreenScreenMethod, VideoResolution } from "@virtualscenery/greenscreenstream";
 
 
 

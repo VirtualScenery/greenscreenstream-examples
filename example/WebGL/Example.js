@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const greenscreenstream_1 = require("greenscreenstream");
+const greenscreenstream_1 = require("@virtualscenery/greenscreenstream");
 document.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void 0, function* () {
     let customChromaKey = {
         r: 0,
